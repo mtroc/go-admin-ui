@@ -165,7 +165,7 @@ import { listPost, getPost, delPost, addPost, updatePost } from '@/api/system/po
 import { formatJson } from '@/utils'
 
 export default {
-  name: 'Post',
+  name: 'post',
   data() {
     return {
       // 遮罩层

@@ -317,7 +317,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import BasicLayout from "@/layout/BasicLayout";
 
 export default {
-  name: 'User',
+  name: 'Sysuser',
   components: { Treeselect, BasicLayout },
   data() {
     return {
