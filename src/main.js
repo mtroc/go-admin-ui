@@ -8,6 +8,7 @@ import Element from 'element-ui'
 import './styles/element-variables.scss'
 // 全局配置elementui的dialog不能通过点击遮罩层关闭
 Element.Dialog.props.closeOnClickModal.default = false
+import './assets/icon/iconfont.css'
 
 import '@/styles/index.scss' // global css
 import '@/styles/admin.scss'
