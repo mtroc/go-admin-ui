@@ -10,7 +10,19 @@
           </el-select>
         </el-form-item>
       </el-col>
-
+      <el-col :span="12">
+        <el-form-item prop="parentMenuId">
+          <span slot="label">上级菜单</span>
+          <treeselect
+            v-model="info.parentMenuId"
+            :options="menuOptions"
+            :normalizer="normalizer"
+            :show-count="true"
+            placeholder="选择上级菜单"
+            :max-height="120"
+          />
+        </el-form-item>
+      </el-col>
       <el-col :span="12">
         <el-form-item prop="packageName">
           <span slot="label">
@@ -58,6 +70,7 @@
           <el-input v-model="info.functionName" />
         </el-form-item>
       </el-col>
+
     </el-row>
 
     <el-row v-show="info.tplCategory == 'tree'">
@@ -120,35 +133,90 @@
   </el-form>
 </template>
 <script>
+import {
+  listMenu
+} from '@/api/system/menu'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+
 export default {
   name: 'BasicInfoForm',
+  components: {
+    Treeselect
+  },
   props: {
     info: {
       type: Object,
-      default: null
+      default: null,
+      parentMenuId: 0
     }
   },
   data() {
     return {
+      // 菜单树选项
+      menuOptions: [],
       rules: {
-        tplCategory: [
-          { required: true, message: '请选择生成模板', trigger: 'blur' }
-        ],
-        packageName: [
-          { required: true, message: '请输入生成包路径', trigger: 'blur' }
-        ],
-        moduleName: [
-          { required: true, message: '请输入生成模块名', trigger: 'blur' }
-        ],
-        businessName: [
-          { required: true, message: '请输入生成业务名', trigger: 'blur' }
-        ],
-        functionName: [
-          { required: true, message: '请输入生成功能名', trigger: 'blur' }
-        ]
+        tplCategory: [{
+          required: true,
+          message: '请选择生成模板',
+          trigger: 'blur'
+        }],
+        packageName: [{
+          required: true,
+          message: '请输入生成包路径',
+          trigger: 'blur'
+        }],
+        moduleName: [{
+          required: true,
+          message: '请输入生成模块名',
+          trigger: 'blur'
+        }],
+        businessName: [{
+          required: true,
+          message: '请输入生成业务名',
+          trigger: 'blur'
+        }],
+        functionName: [{
+          required: true,
+          message: '请输入生成功能名',
+          trigger: 'blur'
+        }],
+        parentMenuId: [{
+          required: true,
+          message: '请选择上级菜单',
+          trigger: 'blur'
+        }]
       }
     }
   },
-  created() {}
+  created() {
+    this.getTreeselect()
+  },
+  methods: {
+    /** 转换菜单数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children
+      }
+      return {
+        id: node.menuId,
+        label: node.title,
+        children: node.children
+      }
+    },
+    /** 查询菜单下拉树结构 */
+    getTreeselect() {
+      listMenu().then(response => {
+        this.menuOptions = []
+        const menu = {
+          menuId: 0,
+          title: '主类目',
+          children: []
+        }
+        menu.children = response.data
+        this.menuOptions.push(menu)
+      })
+    }
+  }
 }
 </script>
