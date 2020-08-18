@@ -1,5 +1,9 @@
 <template>
-  <div class="dashboard-editor-container">
+<div>
+  <img :src="mainIamge" width="313" height="428" alt="fightting~!!">
+  努力加油，老乡~！！！
+</div>
+  <!-- <div class="dashboard-editor-container">
     <el-row :gutter="12">
       <el-col :sm="24" :xs="6" :md="6" :xl="6" :lg="6" :style="{ marginBottom: '12px' }">
         <chart-card title="总销售额" total="￥126,560">
@@ -86,7 +90,7 @@
       </div>
     </el-card>
 
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -97,6 +101,8 @@ import MiniBar from '@/components/MiniBar'
 import MiniProgress from '@/components/MiniProgress'
 import RankList from '@/components/RankList/index'
 import Bar from '@/components/Bar.vue'
+
+import mainIamge from '@/assets/main/main.jpeg'
 
 const barData = []
 const barData2 = []
@@ -134,7 +140,8 @@ export default {
     return {
       barData,
       barData2,
-      rankList
+      rankList,
+      mainIamge: mainIamge + '?' + +new Date(),
     }
   },
   methods: {
