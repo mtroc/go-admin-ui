@@ -11,19 +11,6 @@
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item prop="parentMenuId">
-          <span slot="label">上级菜单</span>
-          <treeselect
-            v-model="info.parentMenuId"
-            :options="menuOptions"
-            :normalizer="normalizer"
-            :show-count="true"
-            placeholder="选择上级菜单"
-            :max-height="120"
-          />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
         <el-form-item prop="packageName">
           <span slot="label">
             生成包路径
@@ -133,17 +120,8 @@
   </el-form>
 </template>
 <script>
-import {
-  listMenu
-} from '@/api/system/menu'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-
 export default {
   name: 'BasicInfoForm',
-  components: {
-    Treeselect
-  },
   props: {
     info: {
       type: Object,
@@ -180,43 +158,11 @@ export default {
           required: true,
           message: '请输入生成功能名',
           trigger: 'blur'
-        }],
-        parentMenuId: [{
-          required: true,
-          message: '请选择上级菜单',
-          trigger: 'blur'
         }]
       }
     }
   },
   created() {
-    this.getTreeselect()
-  },
-  methods: {
-    /** 转换菜单数据结构 */
-    normalizer(node) {
-      if (node.children && !node.children.length) {
-        delete node.children
-      }
-      return {
-        id: node.menuId,
-        label: node.title,
-        children: node.children
-      }
-    },
-    /** 查询菜单下拉树结构 */
-    getTreeselect() {
-      listMenu().then(response => {
-        this.menuOptions = []
-        const menu = {
-          menuId: 0,
-          title: '主类目',
-          children: []
-        }
-        menu.children = response.data
-        this.menuOptions.push(menu)
-      })
-    }
   }
 }
 </script>
