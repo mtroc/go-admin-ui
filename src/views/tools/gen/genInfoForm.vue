@@ -1,16 +1,20 @@
 <template>
   <el-form ref="genInfoForm" :model="info" :rules="rules" label-width="150px">
     <el-row>
-      <el-col :span="12">
-        <el-form-item prop="tplCategory">
-          <span slot="label">生成模板</span>
-          <el-select v-model="info.tplCategory">
-            <el-option label="单表（增删改查）" value="crud" />
-            <!-- <el-option label="树表（增删改查）" value="tree" /> -->
+      <el-col :span="15">
+        <el-form-item prop="parentMenuId">
+          <span slot="label">系统模块
+            <el-tooltip content="请选择项目中已存在的模块，例如 客户管理" placement="top">
+              <i class="el-icon-question" />
+            </el-tooltip>
+          </span>
+          <el-select v-model="info.parentMenuId" style="width: 100%;">
+            <el-option :key="0" label="请选择系统模块" :value="0" disabled />
+            <el-option v-for="menu in parentMenuOptions" :key="menu.menuId" :value="menu.menuId" :label="menu.title" />
           </el-select>
         </el-form-item>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="15">
         <el-form-item prop="packageName">
           <span slot="label">
             生成包路径
@@ -22,7 +26,17 @@
         </el-form-item>
       </el-col>
 
-      <el-col :span="12">
+      <el-col :span="15">
+        <el-form-item prop="tplCategory">
+          <span slot="label">生成模板</span>
+          <el-select v-model="info.tplCategory" style="width: 100%;">
+            <el-option label="单表（增删改查）" value="crud" />
+            <!-- <el-option label="树表（增删改查）" value="tree" /> -->
+          </el-select>
+        </el-form-item>
+      </el-col>
+
+      <!-- <el-col :span="12">
         <el-form-item prop="moduleName">
           <span slot="label">
             生成模块名
@@ -32,9 +46,9 @@
           </span>
           <el-input v-model="info.moduleName" />
         </el-form-item>
-      </el-col>
+      </el-col> -->
 
-      <el-col :span="12">
+      <!-- <el-col :span="12">
         <el-form-item prop="businessName">
           <span slot="label">
             生成业务名
@@ -44,9 +58,9 @@
           </span>
           <el-input v-model="info.businessName" />
         </el-form-item>
-      </el-col>
+      </el-col> -->
 
-      <el-col :span="12">
+      <!-- <el-col :span="12">
         <el-form-item prop="functionName">
           <span slot="label">
             生成功能名
@@ -56,7 +70,7 @@
           </span>
           <el-input v-model="info.functionName" />
         </el-form-item>
-      </el-col>
+      </el-col> -->
 
     </el-row>
 
@@ -120,20 +134,36 @@
   </el-form>
 </template>
 <script>
+import {
+  listMenuModule
+} from '@/api/system/menu'
+
 export default {
   name: 'BasicInfoForm',
   props: {
     info: {
       type: Object,
-      default: null,
-      parentMenuId: 0
+      default: null
     }
   },
   data() {
+    var checkParentMenuId = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请选择系统模块'))
+      } else {
+        callback()
+      }
+    }
     return {
+      parentMenuOptions: [],
       // 菜单树选项
       menuOptions: [],
       rules: {
+        parentMenuId: [{
+          required: true,
+          validator: checkParentMenuId,
+          trigger: 'blur'
+        }],
         tplCategory: [{
           required: true,
           message: '请选择生成模板',
@@ -143,26 +173,29 @@ export default {
           required: true,
           message: '请输入生成包路径',
           trigger: 'blur'
-        }],
-        moduleName: [{
-          required: true,
-          message: '请输入生成模块名',
-          trigger: 'blur'
-        }],
-        businessName: [{
-          required: true,
-          message: '请输入生成业务名',
-          trigger: 'blur'
-        }],
-        functionName: [{
-          required: true,
-          message: '请输入生成功能名',
-          trigger: 'blur'
-        }]
+        }] //,
+        // moduleName: [{
+        //   required: true,
+        //   message: '请输入生成模块名',
+        //   trigger: 'blur'
+        // }],
+        // businessName: [{
+        //   required: true,
+        //   message: '请输入生成业务名',
+        //   trigger: 'blur'
+        // }],
+        // functionName: [{
+        //   required: true,
+        //   message: '请输入生成功能名',
+        //   trigger: 'blur'
+        // }]
       }
     }
   },
   created() {
+    listMenuModule().then(res => {
+      this.parentMenuOptions = res.data
+    })
   }
 }
 </script>

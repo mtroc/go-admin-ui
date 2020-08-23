@@ -58,3 +58,11 @@ export function delMenu(menuId) {
     method: 'delete'
   })
 }
+
+// 查询模块列表
+export function listMenuModule() {
+  return request({
+    url: '/api/v1/modulelist',
+    method: 'get'
+  })
+}

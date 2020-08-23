@@ -1,123 +1,120 @@
 <template>
   <el-card>
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="基本信息" name="basic">
-        <basic-info-form ref="basicInfo" :info="info" />
-      </el-tab-pane>
-      <el-tab-pane label="字段信息" name="cloum">
-        <el-table :data="columns" :max-height="tableHeight" style="width: 100%">
-          <el-table-column fixed label="序号" type="index" width="50" />
-          <el-table-column
-            fixed
-            label="字段列名"
-            prop="columnName"
-            width="150"
-            :show-overflow-tooltip="true"
-          />
-          <el-table-column fixed label="字段描述" width="150">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.columnComment" />
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="物理类型"
-            prop="columnType"
-            width="120"
-            :show-overflow-tooltip="true"
-          />
-          <el-table-column label="go类型" width="120">
-            <template slot-scope="scope">
-              <el-select v-model="scope.row.goType">
-                <el-option label="int64" value="int64" />
-                <el-option label="string" value="string" />
-                <!-- <el-option label="int" value="int" />
-                <el-option label="bool" value="bool" /> -->
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="go属性" width="150">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.goField" />
-            </template>
-          </el-table-column>
-          <el-table-column label="json属性" width="150">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.jsonField" />
-            </template>
-          </el-table-column>
+    <!-- <el-tabs v-model="activeName"> -->
+    <!-- <el-tab-pane label="基本信息" name="basic"> -->
 
-          <el-table-column label="插入" width="50">
-            <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.isInsert" true-label="1" false-label="0" />
-            </template>
-          </el-table-column>
-          <el-table-column label="编辑" width="50">
-            <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.isEdit" true-label="1" false-label="0" />
-            </template>
-          </el-table-column>
-          <el-table-column label="列表" width="50">
-            <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.isList" true-label="1" false-label="0" />
-            </template>
-          </el-table-column>
-          <el-table-column label="查询" width="50">
-            <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.isQuery" true-label="1" false-label="0" />
-            </template>
-          </el-table-column>
-          <el-table-column label="查询方式" width="120">
-            <template slot-scope="scope">
-              <el-select v-model="scope.row.queryType">
-                <el-option label="=" value="EQ" />
-                <el-option label="!=" value="NE" />
-                <el-option label=">" value="GT" />
-                <el-option label=">=" value="GTE" />
-                <el-option label="<" value="LT" />
-                <el-option label="<=" value="LTE" />
-                <el-option label="LIKE" value="LIKE" />
-                <!-- <el-option label="BETWEEN" value="BETWEEN" /> -->
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="必填" width="50">
-            <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.isRequired" true-label="1" />
-            </template>
-          </el-table-column>
-          <el-table-column label="显示类型" width="140">
-            <template slot-scope="scope">
-              <el-select v-model="scope.row.htmlType">
-                <el-option label="文本框" value="input" />
-                <el-option label="下拉框" value="select" />
-                <el-option label="单选框" value="radio" />
-                <!-- <el-option label="复选框" value="checkbox" />
+    <!-- </el-tab-pane> -->
+    <!-- <el-tab-pane label="字段信息" name="cloum"> -->
+    <el-card shadow="never">
+      <div slot="header">
+        <span>字段配置：{{ info.tableName }}</span>
+      </div>
+      <el-table :data="columns" :max-height="tableHeight" size="mini" style="width: 100%">
+        <el-table-column fixed label="序号" type="index" width="50" />
+        <el-table-column fixed label="字段列名" prop="columnName" width="80" :show-overflow-tooltip="true" />
+        <el-table-column fixed label="字段描述" width="100">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.columnComment" size="mini" />
+          </template>
+        </el-table-column>
+        <el-table-column label="物理类型" prop="columnType" width="80" :show-overflow-tooltip="true" />
+        <el-table-column label="go类型" width="80">
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.goType" size="mini">
+              <el-option label="int64" value="int64" />
+              <el-option label="string" value="string" />
+              <!-- <el-option label="int" value="int" />
+                <el-option label="bool" value="bool" /> -->
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column label="go属性" width="110">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.goField" size="mini" />
+          </template>
+        </el-table-column>
+        <el-table-column label="json属性" width="110">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.jsonField" size="mini" />
+          </template>
+        </el-table-column>
+
+        <el-table-column label="插入" width="50">
+          <template slot-scope="scope">
+            <el-checkbox v-model="scope.row.isInsert" true-label="1" false-label="0" size="mini" />
+          </template>
+        </el-table-column>
+        <el-table-column label="编辑" width="50">
+          <template slot-scope="scope">
+            <el-checkbox v-model="scope.row.isEdit" true-label="1" false-label="0" size="mini" />
+          </template>
+        </el-table-column>
+        <el-table-column label="列表" width="50">
+          <template slot-scope="scope">
+            <el-checkbox v-model="scope.row.isList" true-label="1" false-label="0" size="mini" />
+          </template>
+        </el-table-column>
+        <el-table-column label="查询" width="50">
+          <template slot-scope="scope">
+            <el-checkbox v-model="scope.row.isQuery" true-label="1" false-label="0" size="mini" />
+          </template>
+        </el-table-column>
+        <el-table-column label="查询方式" width="80">
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.queryType" size="mini">
+              <el-option label="=" value="EQ" />
+              <el-option label="!=" value="NE" />
+              <el-option label=">" value="GT" />
+              <el-option label=">=" value="GTE" />
+              <el-option label="<" value="LT" />
+              <el-option label="<=" value="LTE" />
+              <el-option label="LIKE" value="LIKE" />
+              <!-- <el-option label="BETWEEN" value="BETWEEN" /> -->
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column label="必填" width="50">
+          <template slot-scope="scope">
+            <el-checkbox v-model="scope.row.isRequired" true-label="1" size="mini" />
+          </template>
+        </el-table-column>
+        <el-table-column label="显示类型" width="120">
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.htmlType" size="mini">
+              <el-option label="文本框" value="input" />
+              <el-option label="下拉框" value="select" />
+              <el-option label="单选框" value="radio" />
+              <!-- <el-option label="复选框" value="checkbox" />
                 <el-option label="文本域" value="textarea" />
                 <el-option label="日期控件" value="datetime" /> -->
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="字典类型" width="160">
-            <template slot-scope="scope">
-              <el-select v-model="scope.row.dictType" clearable filterable placeholder="请选择">
-                <el-option
-                  v-for="dict in dictOptions"
-                  :key="dict.dictType"
-                  :label="dict.dictName"
-                  :value="dict.dictType"
-                >
-                  <span style="float: left">{{ dict.dictName }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{ dict.dictType }}</span>
-                </el-option>
-              </el-select>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-tab-pane>
-      <el-tab-pane label="生成信息" name="genInfo">
-        <gen-info-form ref="genInfo" :info="info" />
-      </el-tab-pane>
-    </el-tabs>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column label="字典类型" width="140">
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.dictType" clearable filterable placeholder="请选择" size="mini">
+              <el-option v-for="dict in dictOptions" :key="dict.dictType" :label="dict.dictName" :value="dict.dictType">
+                <span style="float: left">{{ dict.dictName }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{ dict.dictType }}</span>
+              </el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+    <!-- </el-tab-pane> -->
+    <!-- <el-tab-pane label="生成信息" name="genInfo"> -->
+    <!-- <gen-info-form ref="genInfo" :info="info" /> -->
+    <!-- </el-tab-pane> -->
+    <!-- </el-tabs> -->
+
+    <el-card shadow="never">
+      <div slot="header">
+        <span>生成配置</span>
+      </div>
+      <gen-info-form ref="genInfo" :info="info" />
+      <basic-info-form ref="basicInfo" :info="info" />
+    </el-card>
     <el-form label-width="100px">
       <el-form-item style="text-align: center;margin-left:-100px;margin-top:10px;">
         <el-button type="primary" @click="submitForm()">提交</el-button>
@@ -127,8 +124,13 @@
   </el-card>
 </template>
 <script>
-import { getGenTable, updateGenTable } from '@/api/tools/gen'
-import { optionselect as getDictOptionselect } from '@/api/system/dict/type'
+import {
+  getGenTable,
+  updateGenTable
+} from '@/api/tools/gen'
+import {
+  optionselect as getDictOptionselect
+} from '@/api/system/dict/type'
 import basicInfoForm from './basicInfoForm'
 import genInfoForm from './genInfoForm'
 export default {
@@ -152,7 +154,9 @@ export default {
     }
   },
   beforeCreate() {
-    const { tableId } = this.$route.query
+    const {
+      tableId
+    } = this.$route.query
     if (tableId) {
       // 获取表详细信息
       getGenTable(tableId).then(res => {
@@ -202,7 +206,12 @@ export default {
     /** 关闭按钮 */
     close() {
       this.$store.dispatch('tagsView/delView', this.$route)
-      this.$router.push({ path: '/tools/gen', query: { t: Date.now() }})
+      this.$router.push({
+        path: '/tools/gen',
+        query: {
+          t: Date.now()
+        }
+      })
     }
   }
 }
