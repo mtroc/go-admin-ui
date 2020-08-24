@@ -9,7 +9,7 @@
       <div slot="header">
         <span>字段配置：{{ info.tableName }}</span>
       </div>
-      <el-table :data="columns" :max-height="tableHeight" size="mini" style="width: 100%">
+      <el-table :data="columns" :max-height="tableHeight" size="small" style="width: 100%">
         <el-table-column fixed label="序号" type="index" width="50" />
         <el-table-column fixed label="字段列名" prop="columnName" width="80" :show-overflow-tooltip="true" />
         <el-table-column fixed label="字段描述" width="100">
